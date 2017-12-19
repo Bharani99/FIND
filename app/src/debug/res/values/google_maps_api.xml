@@ -1,0 +1,21 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=0E:28:18:93:AD:91:26:58:EF:E5:3F:B8:1F:12:8A:5B:F8:97:54:39%3Bcom.find.wifitool
+
+    You can also add your credentials to an existing key, using this line:
+    0E:28:18:93:AD:91:26:58:EF:E5:3F:B8:1F:12:8A:5B:F8:97:54:39;com.find.wifitool
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyBVFuMYLYBUa3aTJrf1YSa8tCPqPgeSiFo
+    </string>
+</resources>
