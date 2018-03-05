@@ -1,11 +1,18 @@
 package com.find.wifitool;
 
+import android.animation.FloatArrayEvaluator;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -14,11 +21,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.find.wifitool.internal.Constants;
 import com.qozix.tileview.TileView;
 
 import org.w3c.dom.Document;
@@ -32,7 +42,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MapsActivity extends  ActionBarActivity {
+public class MapsActivity extends AppCompatActivity {
 
     XTileView tileView;
 
@@ -40,7 +50,9 @@ public class MapsActivity extends  ActionBarActivity {
     private String pathId;
     private HashMap<String, Integer> counter;
     private Timer timer;
+    static String start;
     public HashMap<String, MapGraph.State> stateMap = new HashMap<>();
+    static int ifNavigated;
 
 
     /*
@@ -48,6 +60,17 @@ public class MapsActivity extends  ActionBarActivity {
 
 
      */
+
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String currLocation = intent.getStringExtra("location");
+
+            Log.i("Broadcast","hey");
+        }
+    };
+
 
     public MultilayerMapGraph multigraph;
     public MapGraph.State myRoom, prevRoom = null, mySensor, prevSensor = null;
@@ -87,7 +110,7 @@ public class MapsActivity extends  ActionBarActivity {
             gmlPoint = (Element) gmlGeom.getElementsByTagName("gml:Point").item(0);
             tempStr = gmlPoint.getElementsByTagName("gml:pos").item(0).getTextContent();
             coords[0] = Float.parseFloat(tempStr.split(" ")[0]);
-            coords[1] = (Float.parseFloat(tempStr.split(" ")[1])-2339-10)*(-1);
+            coords[1] = (Float.parseFloat(tempStr.split(" ")[1])-2339-50)*(-1);
 
             Log.d("testend","asd");
             // add state to the list
@@ -218,7 +241,25 @@ public class MapsActivity extends  ActionBarActivity {
 
         MapGraph.State destination = multigraph.getState(destine);
         if (!"R11".equals(destination.id)) {
-            List<MapGraph.State> path = multigraph.getPath(0, "R11", destination.id);
+            SharedPreferences         sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, 0);
+
+            start = sharedPreferences.getString("CurrentLocation","R65").toString();
+
+            ifNavigated=1;
+
+            start=            start.substring(1,start.length()-1);
+
+
+            Log.e("Location", start   );
+
+
+
+            MapGraph.State startpoint = multigraph.getState(""+start);
+
+
+            Log.e("Location1","sd "+ startpoint.id   );
+
+            List<MapGraph.State> path = multigraph.getPath(0, startpoint.id, destination.id);
             List<double[]> positions = new ArrayList<>();
             for (MapGraph.State s : path) {
                 //s = changeCoords(s);
@@ -281,10 +322,12 @@ public class MapsActivity extends  ActionBarActivity {
         myPosition = null;
         counter = new HashMap<>();
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                new IntentFilter(Constants.TRACK_BCAST));
         // Load gml file and create graphs
         Document document = null;
         try {
-            InputStream xml = this.getAssets().open("2dd.gml");
+            InputStream xml = this.getAssets().open("1dd.gml");
             XMLParser parser = new XMLParser(xml);
             document = parser.getDocument();
         } catch (Exception e) {
@@ -372,7 +415,7 @@ public class MapsActivity extends  ActionBarActivity {
 
         // Display the TileView
         tileView.setScale(0);
-        setContentView(tileView);
+        //setContentView(tileView);
 
 
         final EditText destination=new EditText(this);
@@ -382,31 +425,38 @@ public class MapsActivity extends  ActionBarActivity {
         button.setText("Go");
 
 
+        FrameLayout frameLayout=new FrameLayout(this);
+        frameLayout.addView(tileView);
 
-        LinearLayout linearLayout=new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setBaselineAligned(true);
-        linearLayout.setWeightSum(4);
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER_VERTICAL);
-        linearLayout.setLayoutParams(param);
+        setContentView(frameLayout);
 
-        LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
-        lParams.weight=3;
+
+        //RelativeLayout linearLayout=new RelativeLayout();
+        //frameLayout.addView(linearLayout);
+
+        FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
+        frameLayout.setLayoutParams(param);
+        //param.addRule(frameLayout.ALIGN_PARENT_BOTTOM);
+
+        FrameLayout.LayoutParams lParams = (FrameLayout.LayoutParams) frameLayout.getLayoutParams();
+        //lParams.weight=3;
         destination.setLayoutParams(lParams);
-        lParams.weight=1;
-        button.setLayoutParams(lParams);
 
-        linearLayout.addView(destination);
-
-        linearLayout.addView(button);
+        //lParams.weight=1;
+        button.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM|Gravity.RIGHT));
 
 
-        tileView.addView(linearLayout);
+        frameLayout.addView(destination);
+
+        frameLayout.addView(button);
+
+
+        //tileView.addView(linearLayout);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String desti=destination.getText().toString();
+                String desti=destination.getText().toString().toUpperCase();
 
 
 

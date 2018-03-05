@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = MainActivity.class.getSimpleName();
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 1234;
-    private SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         // Calling function to set some default values if its our first run
+       // sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, 0);
         sharedPreferences = getSharedPreferences(Constants.PREFS_NAME, 0);
         setDefaultPrefs();
 
@@ -202,11 +203,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if(id == R.id.navigate){
-            startActivity(new Intent(this,MapsActivity.class));
-        }
+
 
         Fragment fragment;
+
+        if(id == R.id.navigate){
+            fragment = new NavigateFragment();
+        }
+        else
         if (id == R.id.nav_settings) {
             fragment = new SettingsFragment();
         }

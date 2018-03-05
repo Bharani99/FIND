@@ -42,7 +42,7 @@ public class TrackFragment extends Fragment {
     //private variables
     private OnFragmentInteractionListener mListener;
     private Context mContext;
-    private SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences;
     private String strUsername;
     private String strServer;
     private String strGroup;
@@ -139,6 +139,7 @@ public class TrackFragment extends Fragment {
 
 
             editor.putString("CurrentLocation", currLocation);
+
             editor.commit();
 
             currLocView.setTextColor(getResources().getColor(R.color.currentLocationColor));

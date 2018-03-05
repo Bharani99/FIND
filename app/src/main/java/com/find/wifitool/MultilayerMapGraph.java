@@ -63,7 +63,7 @@ public class MultilayerMapGraph
 
         Log.d("MapSize234"," "+mapGraphs[0].getGraph().toString());
 
-        DijkstraShortestPath DSPath = new DijkstraShortestPath(mapGraphs[0].getGraph(), startState, endState);
+        DijkstraShortestPath DSPath = new DijkstraShortestPath(mapGraphs[0].getGraph(), startState, endState,100);
         Log.d("MapSize234"," "+DSPath.toString());
 
         return Graphs.getPathVertexList(DSPath.getPath());
