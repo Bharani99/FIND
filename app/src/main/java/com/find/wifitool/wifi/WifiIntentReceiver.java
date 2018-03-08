@@ -113,15 +113,22 @@ public class WifiIntentReceiver extends IntentService {
                 public void onResponse(Response response) throws IOException {
                     String body = response.body().string();
                     if (response.isSuccessful()) {
-                        /*Log.d(TAG, body);
+                        Log.d(TAG, body);
                         try {
-                            //JSONObject json = new JSONObject(body);
-                            //currLocation = json.getString("location");
+                            JSONObject json = new JSONObject(body);
+                            currLocation = json.getString("location").toUpperCase();
+                            JSONObject object= json.getJSONObject("rf");
+
+                            object.names().getString(0);
+                            object.toJSONArray(object.names()).getString(0);
+                            Log.d("JSON array"," "+object.toJSONArray(object.names()).getString(0));
+
+
                         } catch (JSONException e) {
                             Log.e(TAG, "Failed to extract location from response: " + body, e);
                         }
-                        sendCurrentLocation(currLocation);*/
-                        sendCurrentLocation(body);
+                        sendCurrentLocation(currLocation);
+                        //sendCurrentLocation(body);
 
                     } else {
                         Log.e(TAG, "Unsuccessful request: " + body);

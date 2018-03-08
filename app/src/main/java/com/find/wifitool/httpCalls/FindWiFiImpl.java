@@ -58,9 +58,9 @@ public class FindWiFiImpl implements FindWiFi {
         AuthTask(String urlPart, String serverAddr, int method, String json, Callback callback) {
 
             if(urlPart.equals("learn"))
-            this.urlPart = "test.php";
+            this.urlPart = "learn";
             else
-                this.urlPart = "track.php";
+                this.urlPart = "track";
 
             this.serverAddr = serverAddr;
             this.method = method;

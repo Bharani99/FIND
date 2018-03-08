@@ -196,6 +196,7 @@ public class NavigateFragment extends Fragment {
         if (tileView.getPathsDrawn() > 0)
             tileView.removeNavigablePath(pathId);
 
+        Log.d("States"," "+multigraph.getState(destine));
         MapGraph.State destination = multigraph.getState(destine);
         if (!"R11".equals(destination.id)) {
             SharedPreferences         sharedPreferences = getActivity().getSharedPreferences(Constants.PREFS_NAME, 0);
@@ -204,7 +205,9 @@ public class NavigateFragment extends Fragment {
 
             ifNavigated=1;
 
-            start=            start.substring(1,start.length()-1);
+
+
+            //start=            start.substring(1,start.length()-1);
 
 
             Log.e("Location", start   );
@@ -410,6 +413,7 @@ public class NavigateFragment extends Fragment {
 
 
 
+                Log.e("Destination","\'"+desti+"\'");
                 navigation(desti);
             }
         });
@@ -460,7 +464,7 @@ public class NavigateFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         handler.removeCallbacks(runnableCode);
-
+        ifNavigated=0;
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mMessageReceiver);
         mListener = null;
     }
