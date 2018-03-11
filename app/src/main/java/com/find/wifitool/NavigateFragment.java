@@ -224,6 +224,7 @@ public class NavigateFragment extends Fragment {
             for (MapGraph.State s : path) {
                 //s = changeCoords(s);
                 positions.add(new double[]{s.coords[0], s.coords[1]});
+                if(s.id.equals("Stairs"))break;
             }
             //positions.remove(0);
 
@@ -301,7 +302,7 @@ public class NavigateFragment extends Fragment {
         // Load gml file and create graphs
         Document document = null;
         try {
-            InputStream xml = getActivity().getAssets().open("1dd.gml");
+            InputStream xml = getActivity().getAssets().open("4dd.gml");
             XMLParser parser = new XMLParser(xml);
             document = parser.getDocument();
         } catch (Exception e) {
@@ -310,6 +311,8 @@ public class NavigateFragment extends Fragment {
 
         // Create room graph and sensor graph
         MapGraph roomGraph = createGraph(document, 0);
+        Log.i("Graph created","Success");
+
 
         // Create multilayer graph with room graph and sensor graph
         multigraph = new MultilayerMapGraph(roomGraph);
@@ -465,6 +468,7 @@ public class NavigateFragment extends Fragment {
         super.onDetach();
         handler.removeCallbacks(runnableCode);
         ifNavigated=0;
+        desti="";
         LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mMessageReceiver);
         mListener = null;
     }

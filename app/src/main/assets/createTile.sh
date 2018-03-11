@@ -3,9 +3,9 @@
 echo should already have original image in folder, as well as folders named tiles and samples
 
 
-basename=0
+basename=3
 
-filename=0.png
+filename=3.png
 extension=jpg
 imagemagick=convert
 tilesize=256

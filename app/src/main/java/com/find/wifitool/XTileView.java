@@ -335,7 +335,7 @@ public class XTileView extends TileView
         destination.setImageResource(resId);
         Log.d("dest"," "+destination.toString()+" "+destCords[0]+","+destCords[1]);
 
-        addZoomableMarker(destination, "pin", destCords[0], destCords[1]);
+        addZoomableMarker(destination, "pind", destCords[0], destCords[1]);
 
         Log.d("asd","asd");
 
@@ -352,8 +352,10 @@ public class XTileView extends TileView
 
     public void removeNavigablePath(String pathId)
     {
+
         // remove destination pin marker
         removeZoomableMarker("pin");
+        removeZoomableMarker("pind");
         // remove arrow markers
         for(int i=0; i<(paths.get(pathId).points.size() - 1); i++)
             removeZoomableMarker(pathId + "_" + "arrow" + i);
