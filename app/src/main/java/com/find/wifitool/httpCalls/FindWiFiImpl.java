@@ -48,6 +48,12 @@ public class FindWiFiImpl implements FindWiFi {
         new AuthTask("learn", serverAddr, POST, requestBody.toString(), callback).execute();
     }
 
+    @Override
+    public void findLocation(Callback callback, String serverAddr, JSONObject requestBody) {
+        new AuthTask("location", serverAddr, GET, requestBody.toString(), callback).execute();
+
+    }
+
     private class AuthTask extends AsyncTask<Void, Void, Void> {
         private final String urlPart;
         private final int method;
@@ -60,7 +66,10 @@ public class FindWiFiImpl implements FindWiFi {
             if(urlPart.equals("learn"))
             this.urlPart = "learn";
             else
-                this.urlPart = "track";
+                if(urlPart.equals("location"))
+                    this.urlPart = "location";
+                else
+                    this.urlPart = "track";
 
             this.serverAddr = serverAddr;
             this.method = method;

@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
+      //  if(id==R.id.sos)
 
         Fragment fragment;
 

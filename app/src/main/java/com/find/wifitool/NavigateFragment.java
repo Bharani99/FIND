@@ -210,6 +210,7 @@ public class NavigateFragment extends Fragment {
             //start=            start.substring(1,start.length()-1);
 
 
+            //start="R52";
             Log.e("Location", start   );
 
 
@@ -219,17 +220,19 @@ public class NavigateFragment extends Fragment {
 
             Log.e("Location1","sd "+ startpoint.id   );
 
+            int br=0;
             List<MapGraph.State> path = multigraph.getPath(0, startpoint.id, destination.id);
             List<double[]> positions = new ArrayList<>();
             for (MapGraph.State s : path) {
                 //s = changeCoords(s);
                 positions.add(new double[]{s.coords[0], s.coords[1]});
-                if(s.id.equals("Stairs"))break;
+                if(s.id.equals("Stairs")){br=1;break;}
             }
             //positions.remove(0);
 
             pathId = "R11" + "-" + destination.id;
-            tileView.drawNavigablePath(pathId, new XTileView.NavigablePath(positions));
+            tileView.drawNavigablePath(pathId, new XTileView.NavigablePath(positions),br);
+            br=0;
 
 
         }

@@ -226,7 +226,7 @@ public class MapsActivity extends AppCompatActivity {
             //positions.remove(0);
 
             pathId = mySensor.id + "-" + destination.id;
-            tileView.drawNavigablePath(pathId, new XTileView.NavigablePath(positions));
+            tileView.drawNavigablePath(pathId, new XTileView.NavigablePath(positions),0);
 
 
         }
@@ -268,7 +268,7 @@ public class MapsActivity extends AppCompatActivity {
             //positions.remove(0);
 
             pathId = "R11" + "-" + destination.id;
-            tileView.drawNavigablePath(pathId, new XTileView.NavigablePath(positions));
+            tileView.drawNavigablePath(pathId, new XTileView.NavigablePath(positions),0);
 
 
         }

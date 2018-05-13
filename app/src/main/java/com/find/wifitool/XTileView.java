@@ -304,7 +304,7 @@ public class XTileView extends TileView
         }
     }
 
-    public void drawNavigablePath(String pathId, NavigablePath navigablePath)
+    public void drawNavigablePath(String pathId, NavigablePath navigablePath, int br)
     {
         int itemNum = navigablePath.points.size();
         double scale = getScale();
@@ -324,9 +324,17 @@ public class XTileView extends TileView
 
         Log.d("scale"," "+scale);
 
-        int resId = context.getResources().getIdentifier("pin_" + XTileView.getZoomLevel(scale),   "drawable", "com.findTools.Find");
 
-        Log.d("res"," "+resId);
+
+
+
+        int resId;
+        if(br==1)
+            resId = context.getResources().getIdentifier("stairs",   "drawable", "com.findTools.Find");
+
+        else
+        resId = context.getResources().getIdentifier("pin_" + XTileView.getZoomLevel(scale),   "drawable", "com.findTools.Find");
+
 
 
 
